@@ -35,9 +35,15 @@ namespace Tabloid.Controllers
         }
 
         // POST api/<TagController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("add")]
+        public IActionResult Post(Tag tag)
         {
+            if (tag == null)
+            {
+                return BadRequest();
+            }
+            _tagRepository.Add(tag);
+            return CreatedAtAction("Get", new { id = tag.Id }, tag);
         }
 
         // PUT api/<TagController>/5
