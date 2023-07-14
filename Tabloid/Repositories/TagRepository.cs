@@ -8,6 +8,8 @@ namespace Tabloid.Repositories
     public class TagRepository : BaseRepository, ITagRepository
     {
         public TagRepository(IConfiguration configuration) : base(configuration) { }
+
+
         public List<Tag> GetAll()
         {
             using (var conn = Connection)
@@ -34,6 +36,37 @@ namespace Tabloid.Repositories
 
                 }
             }
+        }
+        public Tag Get(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+        public void Add(Tag tag)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Tag ([Name])
+                        OUTPUT INSERTED.Id
+                        VALUES (@name)";
+                    DbUtils.AddParameter(cmd, "@name", tag.Name);
+                    tag.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void Delete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+        public void Update(Tag tag)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
