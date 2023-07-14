@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using Tabloid.Models;
 using Tabloid.Utils;
 
@@ -8,6 +10,84 @@ namespace Tabloid.Repositories
     {
         public UserProfileRepository(IConfiguration configuration) : base(configuration) { }
 
+        public List<UserProfile> GetAll()
+        {
+            using( var conn = Connection)
+            {
+                conn.Open();
+                using( var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"select u.id as Id,u.UserTypeId,DisplayName,FirstName,LastName, t.name as Type from UserProfile u 
+                    join UserType t on UserTypeId = t.Id  order by u.DisplayName";
+                    using( SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var users = new List<UserProfile>();
+                        while (reader.Read())
+                        {
+                            var user = new UserProfile()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                FirstName = DbUtils.GetString(reader, "FirstName"),
+                                LastName = DbUtils.GetString(reader, "LastName"),
+                                DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                                UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                                UserType = new UserType()
+                                {
+                                    Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                    Name = DbUtils.GetString(reader, "Type"),
+                                }
+                            };
+                            users.Add(user);
+                        }
+                        return users;
+                    }
+                }
+            }
+
+        }
+
+        public UserProfile Get(int id)
+        {
+            using( var conn = Connection)
+            {
+                conn.Open();
+                using( var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"select u.id as Id,u.UserTypeId,CreateDateTime,ImageLocation,
+                    Email,DisplayName,FirstName,LastName, t.name as 
+                    Type from UserProfile u join UserType t on UserTypeId = t.Id where u.Id = @id";
+                    DbUtils.AddParameter(cmd, "@id", id);
+
+                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        UserProfile user = null;
+                        if (reader.Read())
+                        {
+                            user = new UserProfile()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                FirstName = DbUtils.GetString(reader, "FirstName"),
+                                LastName = DbUtils.GetString(reader, "LastName"),
+                                DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                                UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                                Email=DbUtils.GetString(reader, "Email"),
+                                CreateDateTime = DbUtils.GetDateTime(reader, "CreateDateTime"),
+                                UserType = new UserType()
+                                {
+                                    Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                    Name = DbUtils.GetString(reader, "Type"),
+                                }
+                            };
+                            if (!reader.IsDBNull(reader.GetOrdinal("ImageLocation")))
+                            {
+                                user.ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation"));
+                            }
+                        }
+                        return user;
+                    }
+                }
+            }
+        }
         public UserProfile GetByFirebaseUserId(string firebaseUserId)
         {
             using (var conn = Connection)
