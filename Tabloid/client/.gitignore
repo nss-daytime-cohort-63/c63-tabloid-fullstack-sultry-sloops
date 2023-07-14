@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# csg
+CSG-01_Tabloid_Create_DB.SQL
+CSG-02_Tabloid.Seed_Data.sql
+SQLQuery1.sql
