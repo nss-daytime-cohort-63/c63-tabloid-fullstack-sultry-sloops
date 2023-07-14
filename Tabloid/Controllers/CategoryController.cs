@@ -37,3 +37,5 @@ namespace Tabloid.Controllers
 
     }
 }
+
+//need to complete CRUD
