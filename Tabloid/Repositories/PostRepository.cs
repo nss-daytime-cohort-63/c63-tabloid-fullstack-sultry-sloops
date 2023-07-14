@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Tabloid.Models;
 using Tabloid.Utils;
 
+
 namespace Tabloid.Repositories
 {
     public class PostRepository : BaseRepository, IPostRepository
@@ -19,17 +20,12 @@ namespace Tabloid.Repositories
                 {
                     cmd.CommandText = @"
                             SELECT p.Id, p.Title, p.Content, p.ImageLocation as 'PostImage', p.CreateDateTime as 'PostCreate', p.PublishDateTime, p.IsApproved, p.CategoryId, 
-                
-                       up.Id as 'UserId', up.DisplayName, up.FirstName, up.LastName, up.Email, up.CreateDateTime as 'UserCreate', up.ImageLocation as 'UserImage', up.UserTypeId, 
-
-                        ut.Name as 'UserTypeName' 
-
-                        FROM Post p JOIN UserProfile up ON p.UserProfileId = up.Id 
-                        
-                        JOIN UserType ut on up.UserTypeId = ut.Id 
-
-                       ORDER BY p.PublishDateTime ASC
-                            ";
+                                up.Id as 'UserId', up.DisplayName, up.FirstName, up.LastName, up.Email, up.CreateDateTime as 'UserCreate', up.ImageLocation as 'UserImage', up.UserTypeId, 
+                                ut.Name as 'UserTypeName' 
+                                FROM Post p JOIN UserProfile up ON p.UserProfileId = up.Id 
+                                JOIN UserType ut on up.UserTypeId = ut.Id 
+                                ORDER BY p.PublishDateTime ASC
+                                ";
 
                     List<Post> posts = new List<Post>();
 
@@ -137,6 +133,67 @@ namespace Tabloid.Repositories
         }
 
 
+        public Post GetPublishedPostById(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @" 
+                            SELECT p.Id, p.Title, p.Content, p.ImageLocation as 'PostImage', p.CreateDateTime as 'PostCreate', p.PublishDateTime, p.IsApproved, p.CategoryId, 
+                                        up.Id as 'UserId', up.DisplayName, up.FirstName, up.LastName, up.Email, up.CreateDateTime as 'UserCreate', up.ImageLocation as 'UserImage', up.UserTypeId, 
+                                        ut.Name as 'UserTypeName' 
+                                    FROM Post p JOIN UserProfile up ON p.UserProfileId = up.Id 
+                                        JOIN UserType ut on up.UserTypeId = ut.Id
+                                    WHERE p.IsApproved = 1 AND p.PublishDateTime < SYSDATETIME() AND p.Id = @Id
+                                        ORDER BY p.PublishDateTime ASC";
+
+                    DbUtils.AddParameter(cmd, "@Id", id);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        Post post = null;
+
+                        if (reader.Read())
+                        {
+                            post = new Post()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                Title = DbUtils.GetString(reader, "Title"),
+                                Content = DbUtils.GetString(reader, "Content"),
+                                ImageLocation = DbUtils.GetNullableString(reader, "PostImage"),
+                                CreateDateTime = DbUtils.GetDateTime(reader, "PostCreate"),
+                                PublishDateTime = DbUtils.GetNullableDateTime(reader, "PublishDateTime"),
+                                IsApproved = reader.GetBoolean(reader.GetOrdinal("IsApproved")),
+                                CategoryId = DbUtils.GetInt(reader, "CategoryId"),
+                                UserProfileId = DbUtils.GetInt(reader, "UserId"),
+                                UserProfile = new UserProfile()
+                                {
+                                    Id = DbUtils.GetInt(reader, "UserId"),
+                                    FirstName = DbUtils.GetString(reader, "FirstName"),
+                                    LastName = DbUtils.GetString(reader, "LastName"),
+                                    DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                                    Email = DbUtils.GetString(reader, "Email"),
+                                    CreateDateTime = DbUtils.GetDateTime(reader, "UserCreate"),
+                                    ImageLocation = DbUtils.GetNullableString(reader, "UserImage"),
+                                    UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                                    UserType = new UserType()
+                                    {
+                                        Id = DbUtils.GetInt(reader, "UserTypeId"),
+                                        Name = DbUtils.GetString(reader, "UserTypeName"),
+                                    }
+                                }
+
+                            };
+                        }
+
+                    return post;
+                    }
+
+                }
+            }
+        }
 
     }
 }
