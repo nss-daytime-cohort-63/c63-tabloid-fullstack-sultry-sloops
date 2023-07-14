@@ -1,7 +1,10 @@
-const baseUrl = "/api/Post/"
+const baseUrl = "/api/Post";
 
-export const getAllVideos = () => {
-    return fetch(baseUrl)
-        .then(response => response.json())
-
-}
+export const getAllPosts = () => {
+  return fetch(baseUrl).then((response) => response.json());
+};
+export const getAllPastApprovedPosts = () => {
+  return fetch(`${baseUrl}/GetApprovedPastPosts`).then((response) =>
+    response.json()
+  );
+};

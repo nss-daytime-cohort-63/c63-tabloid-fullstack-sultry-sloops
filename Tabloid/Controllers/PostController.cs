@@ -21,5 +21,11 @@ namespace Tabloid.Controllers
         {
             return Ok(_postRepository.GetAll());
         }
+
+        [HttpGet("GetApprovedPastPosts")]
+        public IActionResult GetPastApprovedPosts()
+        {
+            return Ok(_postRepository.GetAllPastApprovedPosts());
+        }
     }
 }
