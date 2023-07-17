@@ -7,6 +7,7 @@ import { UserList } from "./UserList";
 import { UserDetails } from "./UserDetails";
 import TagList from "./TagList";
 import { PostList } from "./PostList";
+import { UserEdit } from "./UserEdit";
 import CategoryList from "./CategoryList";
 import PostDetails from "./PostDetails";
 
@@ -21,8 +22,9 @@ export default function ApplicationViews({ isLoggedIn }) {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="users" element={<UserList />} />
-          <Route path="users/:id" element={<UserDetails />} />
+          <Route path ="users" element={<UserList />} />
+          <Route path ="users/:id" element={<UserDetails />} />
+          <Route path ="users/edit/:id" element={<UserEdit />} />
           <Route path="tag" element={<TagList />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
           <Route path="posts" element={<PostList />} />
