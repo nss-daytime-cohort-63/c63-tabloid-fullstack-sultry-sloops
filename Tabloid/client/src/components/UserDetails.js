@@ -1,17 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { getUserById } from "../modules/userManager";
-import { useParams } from "react-router-dom";
-
+import { getUserById, reactivateUser } from "../modules/userManager";
+import { useNavigate, useParams } from "react-router-dom";
+import { deactivateUser } from "../modules/userManager";
 export const UserDetails = () => {
     const [user, setUser] = useState();
     const { id } = useParams();
-
+    const navigate = useNavigate()
     useEffect(() => {
         getUserById(id).then(setUser)
     }, [])
 
     if (!user) {
         return null;
+    }
+
+    const deactivateCurrent = (event)=>{
+        event.preventDefault()
+        deactivateUser(user)
+        .then(()=>{
+            navigate(`/users/deactive`)
+        })
+    }
+
+    const reactivateCurrent = (event)=>{
+        event.preventDefault()
+       reactivateUser(user)
+        .then(()=>{
+            navigate(`/users`)
+        })
     }
 
     const date = new Date(user.createDateTime)
@@ -27,6 +43,10 @@ export const UserDetails = () => {
         <section>Email: {user.email}</section>
         <section>Creation Date: {date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}</section>
         <section>User Type: {user.userType.name}</section>
+        {
+            user.isActive === true ? <button onClick={(ev)=>deactivateCurrent(ev)}>Deactivate</button> : <button onClick={(ev)=>reactivateCurrent(ev)}>Reactivate</button>
+        }
+        
 
     </div>
 }

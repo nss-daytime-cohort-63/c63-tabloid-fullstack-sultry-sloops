@@ -10,6 +10,7 @@ import { PostList } from "./PostList";
 import { UserEdit } from "./UserEdit";
 import CategoryList from "./CategoryList";
 import PostDetails from "./PostDetails";
+import { DeactiveUserList } from "./UserDList";
 
 export default function ApplicationViews({ isLoggedIn }) {
   return (
@@ -23,6 +24,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path ="users" element={<UserList />} />
+          <Route path ="users/deactive" element={<DeactiveUserList />} />
           <Route path ="users/:id" element={<UserDetails />} />
           <Route path ="users/edit/:id" element={<UserEdit />} />
           <Route path="tag" element={<TagList />} />
