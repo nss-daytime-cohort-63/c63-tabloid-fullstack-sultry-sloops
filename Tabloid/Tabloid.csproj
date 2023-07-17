@@ -9,6 +9,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="client\.env.local" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="client\.env.local" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="appsettings.Local.json" />
   </ItemGroup>
 
