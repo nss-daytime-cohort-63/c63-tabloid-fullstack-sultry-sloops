@@ -1,9 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
+import { deleteTag } from "../modules/tagManager";
 
-const Tag = ({ t }) => {
+const Tag = ({ tag, toggle, setSelTag }) => {
+
+    const extraToggle = () => {
+        setSelTag(tag);
+        toggle();
+    }
+
     return (
-        <li>{t.name}</li>
+        <>
+            <li>{tag.name}</li>
+            <Button variant="primary" onClick={extraToggle}>
+                Delete
+            </Button>
+        </>
     );
 }
+
 export default Tag;

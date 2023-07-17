@@ -1,13 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { addTag } from "../modules/tagManager";
-import { useNavigate } from "react-router-dom";
 
 const TagMaker = ({ getTags }) => {
     const [newTag, updateTag] = useState({
         Name: ""
     });
-    const navigate = useNavigate();
 
     const newTagButton = (event) => {
         event.preventDefault();
