@@ -26,11 +26,11 @@ const PostDetails = () => {
                 }
             </div>
             <h1>{post.title}</h1>
-            <h2>{post.categoryId}</h2>
+            <h2>{post.category.name}</h2>
             <div>
                 <div>
                     {
-                        post.userProfile.imageLocation === null ? <section><img height="20px" src="https://www.disneyclips.com/images/images/goofy_thinking.gif"></img></section> : <section><img height="20px" src={post?.userProfile.imageLocation}></img></section>
+                        post.userProfile.imageLocation === null ? <section><img height="30px" src="https://www.disneyclips.com/images/images/goofy_thinking.gif"></img></section> : <section><img height="30px" src={post?.userProfile.imageLocation}></img></section>
                     }
                     <p>{post.userProfile.displayName}</p>
                 </div>

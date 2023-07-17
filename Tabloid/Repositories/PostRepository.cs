@@ -21,9 +21,11 @@ namespace Tabloid.Repositories
                     cmd.CommandText = @"
                             SELECT p.Id, p.Title, p.Content, p.ImageLocation as 'PostImage', p.CreateDateTime as 'PostCreate', p.PublishDateTime, p.IsApproved, p.CategoryId, 
                                 up.Id as 'UserId', up.DisplayName, up.FirstName, up.LastName, up.Email, up.CreateDateTime as 'UserCreate', up.ImageLocation as 'UserImage', up.UserTypeId, 
-                                ut.Name as 'UserTypeName' 
+                                ut.Name as 'UserTypeName', 
+                                c.Id as 'CategoryId', c.Name as 'CategoryName' 
                                 FROM Post p JOIN UserProfile up ON p.UserProfileId = up.Id 
                                 JOIN UserType ut on up.UserTypeId = ut.Id 
+                                JOIN Category c on p.CategoryId = c.Id
                                 ORDER BY p.PublishDateTime ASC
                                 ";
 
@@ -59,6 +61,11 @@ namespace Tabloid.Repositories
                                     Id = DbUtils.GetInt(reader, "UserTypeId"),
                                     Name = DbUtils.GetString(reader, "UserTypeName"),
                                 }
+                            },
+                            Category = new Category()
+                            {
+                                Id = DbUtils.GetInt(reader, "CategoryId"),
+                                Name = DbUtils.GetString(reader, "CategoryName")
                             }
 
                         };
@@ -81,9 +88,11 @@ namespace Tabloid.Repositories
                     cmd.CommandText = @"
                                         SELECT p.Id, p.Title, p.Content, p.ImageLocation as 'PostImage', p.CreateDateTime as 'PostCreate', p.PublishDateTime, p.IsApproved, p.CategoryId, 
                                         up.Id as 'UserId', up.DisplayName, up.FirstName, up.LastName, up.Email, up.CreateDateTime as 'UserCreate', up.ImageLocation as 'UserImage', up.UserTypeId, 
-                                        ut.Name as 'UserTypeName' 
+                                        ut.Name as 'UserTypeName', 
+                                        c.Id as 'CategoryId', c.Name as 'CategoryName' 
                                         FROM Post p JOIN UserProfile up ON p.UserProfileId = up.Id 
                                         JOIN UserType ut on up.UserTypeId = ut.Id
+                                        JOIN Category c on p.CategoryId = c.Id
                                         WHERE p.IsApproved = 1 AND p.PublishDateTime < SYSDATETIME()
                                         ORDER BY p.PublishDateTime ASC
                             ";
@@ -120,6 +129,11 @@ namespace Tabloid.Repositories
                                     Id = DbUtils.GetInt(reader, "UserTypeId"),
                                     Name = DbUtils.GetString(reader, "UserTypeName"),
                                 }
+                            },
+                            Category = new Category()
+                            {
+                                Id = DbUtils.GetInt(reader, "CategoryId"),
+                                Name = DbUtils.GetString(reader, "CategoryName")
                             }
 
                         };
@@ -143,9 +157,11 @@ namespace Tabloid.Repositories
                     cmd.CommandText = @" 
                             SELECT p.Id, p.Title, p.Content, p.ImageLocation as 'PostImage', p.CreateDateTime as 'PostCreate', p.PublishDateTime, p.IsApproved, p.CategoryId, 
                                         up.Id as 'UserId', up.DisplayName, up.FirstName, up.LastName, up.Email, up.CreateDateTime as 'UserCreate', up.ImageLocation as 'UserImage', up.UserTypeId, 
-                                        ut.Name as 'UserTypeName' 
+                                        ut.Name as 'UserTypeName', 
+                                        c.Id as 'CategoryId', c.Name as 'CategoryName' 
                                     FROM Post p JOIN UserProfile up ON p.UserProfileId = up.Id 
                                         JOIN UserType ut on up.UserTypeId = ut.Id
+                                        JOIN Category c on p.CategoryId = c.Id
                                     WHERE p.IsApproved = 1 AND p.PublishDateTime < SYSDATETIME() AND p.Id = @Id
                                         ORDER BY p.PublishDateTime ASC";
 
@@ -183,6 +199,11 @@ namespace Tabloid.Repositories
                                         Id = DbUtils.GetInt(reader, "UserTypeId"),
                                         Name = DbUtils.GetString(reader, "UserTypeName"),
                                     }
+                                },
+                                Category = new Category()
+                                {
+                                    Id = DbUtils.GetInt(reader, "CategoryId"),
+                                    Name = DbUtils.GetString(reader, "CategoryName")
                                 }
 
                             };
