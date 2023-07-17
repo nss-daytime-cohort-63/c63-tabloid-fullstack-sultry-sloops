@@ -5,8 +5,10 @@ namespace Tabloid.Repositories
 {
     public interface IPostRepository
     {
+        void Add(Post post);
         List<Post> GetAll();
         List<Post> GetAllPastApprovedPosts();
+        List<Post> GetPostByUserId(int userProfileId);
         Post GetPublishedPostById(int id);
     }
 }

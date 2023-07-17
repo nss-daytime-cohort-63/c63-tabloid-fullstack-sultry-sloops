@@ -11,9 +11,10 @@ namespace Tabloid.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
+
         public PostController(IPostRepository postRepository)
         {
-            _postRepository = postRepository;
+            _postRepository = postRepository; 
         }
 
         [HttpGet]
@@ -32,12 +33,31 @@ namespace Tabloid.Controllers
         [HttpGet("{id}")]
         public IActionResult GetPublishedPostById(int id)
         {
-            var post = _postRepository.GetPublishedPostById(id);            
+            var post = _postRepository.GetPublishedPostById(id);
             if (post == null)
             {
                 return NotFound();
             }
             return Ok(post);
+        }
+
+        // Get posts by user profile
+        [HttpGet("GetByUserId/{userId}")]
+        public IActionResult GetPostByUserId(int userId)
+        {
+            return Ok(_postRepository.GetPostByUserId(userId));
+        }
+
+        // POST api/<PostController>
+        [HttpPost("add")]
+        public IActionResult Post(Post post)
+        {
+            if (post == null)
+            {
+                return BadRequest();
+            }
+            _postRepository.Add(post);
+            return CreatedAtAction("Get", new { id = post.Id }, post);
         }
     }
 }

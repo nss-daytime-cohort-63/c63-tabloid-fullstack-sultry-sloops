@@ -1,9 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Button } from "reactstrap";
 
 const Category = ({ c }) => {
     return (
-        <li>{c.name}</li>
+        <>
+            <li>{c.name}</li>
+            <Button>Delete</Button>
+        </>
     );
 }
+
+
+
+
+
 export default Category;
