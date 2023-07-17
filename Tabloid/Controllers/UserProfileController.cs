@@ -49,6 +49,16 @@ namespace Tabloid.Controllers
             return Ok();
         }
 
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, UserProfile user)
+        {
+            if(id != user.Id)
+            {
+                return BadRequest();
+            }
+            _userProfileRepository.Update(user);
+            return NoContent();
+        }
         [HttpPost]
         public IActionResult Post(UserProfile userProfile)
         {

@@ -135,6 +135,20 @@ namespace Tabloid.Repositories
             }
         }
 
+        public void Update(UserProfile userProfile)
+        {
+            using( var conn = Connection)
+            {
+                conn.Open();
+                using( var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"Update UserProfile set UserTypeId = @userId Where Id = @id";
+                    DbUtils.AddParameter(cmd,"@id",userProfile.Id);
+                    DbUtils.AddParameter(cmd, "@userId", userProfile.UserTypeId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         public void Add(UserProfile userProfile)
         {
             using (var conn = Connection)
