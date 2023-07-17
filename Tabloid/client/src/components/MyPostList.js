@@ -7,6 +7,14 @@ import { getAllCategories } from "../modules/categoryManager";
 export const PostList = () => {
     const [posts, setPosts] = useState([]);
 
+    const getCategories = () => {
+        getAllCategories().then(data => setCategories(data));
+    }
+    useEffect(
+        () => {
+            getCategories();
+        }, []
+    );
 
     // updated function to getPostByUserId - need to include userId parameter, but how do we get it?
     // Post details should work from this page, right?

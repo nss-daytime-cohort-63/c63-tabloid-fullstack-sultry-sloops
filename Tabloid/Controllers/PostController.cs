@@ -11,11 +11,10 @@ namespace Tabloid.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
-        private readonly ICategoryRepository _categoryRepository;
 
-        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository)
+        public PostController(IPostRepository postRepository)
         {
-            _postRepository = postRepository; _categoryRepository = categoryRepository;
+            _postRepository = postRepository; 
         }
 
         [HttpGet]
@@ -59,7 +58,6 @@ namespace Tabloid.Controllers
             }
             _postRepository.Add(post);
             return CreatedAtAction("Get", new { id = post.Id }, post);
-            // somehow need to add category dropdown and how to incorporate the logged in userId
         }
     }
 }

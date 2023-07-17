@@ -10,6 +10,7 @@ import { PostList } from "./PostList";
 import { UserEdit } from "./UserEdit";
 import CategoryList from "./CategoryList";
 import PostDetails from "./PostDetails";
+import MyPostList from "./MyPostList";
 
 export default function ApplicationViews({ isLoggedIn, userProfile }) {
   return (
@@ -28,7 +29,7 @@ export default function ApplicationViews({ isLoggedIn, userProfile }) {
           <Route path="tag" element={<TagList />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
           <Route path="posts" element={<PostList />} />
-          {/* <Route path="myposts" element={<MyPostList />} /> */}
+          <Route path="myposts" element={<MyPostList />} />
           <Route
             path="posts"
             element={<PostList userProfile={userProfile} />}
