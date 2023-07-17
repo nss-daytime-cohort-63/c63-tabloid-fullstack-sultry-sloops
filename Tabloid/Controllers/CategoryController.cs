@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor.Compilation;
+using Microsoft.Extensions.Hosting;
 using System;
 using Tabloid.Models;
 using Tabloid.Repositories;
@@ -21,7 +21,7 @@ namespace Tabloid.Controllers
             _categoryRepository = categoryRepository;
 
         }
-
+        // GET: api/<CategoryController>
         [HttpGet]
         public IActionResult Get()
         {
@@ -32,10 +32,21 @@ namespace Tabloid.Controllers
                 return NotFound();
             }
             return Ok(categories);
-
         }
-
+        // POST api/<TagController>
+        [HttpPost("add")]
+        public IActionResult Post(Category category)
+        {
+            if (category == null)
+            {
+                return BadRequest();
+            }
+            _categoryRepository.AddCategory(category);
+            return CreatedAtAction("Get", new { id = category.Id }, category);
+        }
+        
     }
+
 }
 
-//need to complete CRUD
+//need to complete CRUD !!!
