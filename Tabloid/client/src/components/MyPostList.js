@@ -2,9 +2,11 @@ import { Post } from "./Post";
 import { getPostByUserId } from "../modules/postManager";
 import { useState, useEffect } from "react";
 import { Table } from "reactstrap";
+import { getAllCategories } from "../modules/categoryManager";
 
 export const PostList = () => {
     const [posts, setPosts] = useState([]);
+
 
     // updated function to getPostByUserId - need to include userId parameter, but how do we get it?
     // Post details should work from this page, right?
