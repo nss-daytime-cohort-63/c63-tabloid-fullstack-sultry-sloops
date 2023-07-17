@@ -6,8 +6,10 @@ import { Table } from "reactstrap";
 export const PostList = () => {
     const [posts, setPosts] = useState([]);
 
-    const getPosts = () => {
-        getPostByUserId().then((data) => setPosts(data));
+    // updated function to getPostByUserId - need to include userId parameter, but how do we get it?
+    // Post details should work from this page, right?
+    const getPosts = (userId) => {
+        getPostByUserId(userId).then((data) => setPosts(data));
     };
 
     useEffect(() => {
