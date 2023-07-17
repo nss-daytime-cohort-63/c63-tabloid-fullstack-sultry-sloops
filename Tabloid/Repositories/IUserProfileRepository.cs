@@ -9,6 +9,6 @@ namespace Tabloid.Repositories
         UserProfile GetByFirebaseUserId(string firebaseUserId);
         public List<UserProfile> GetAll();
         public UserProfile Get(int id);
-
+        public void Update(UserProfile userProfile);
     }
 }
