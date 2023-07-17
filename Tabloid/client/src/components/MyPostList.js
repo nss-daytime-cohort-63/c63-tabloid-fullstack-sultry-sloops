@@ -1,29 +1,15 @@
 import { Post } from "./Post";
-import { getPostByUserId } from "../modules/postManager";
+import { getPostsByUserId } from "../modules/postManager";
 import { useState, useEffect } from "react";
 import { Table } from "reactstrap";
 import { getAllCategories } from "../modules/categoryManager";
 
-export const PostList = () => {
+export const MyPostList = ({ userProfile }) => {
     const [posts, setPosts] = useState([]);
 
-    const getCategories = () => {
-        getAllCategories().then(data => setCategories(data));
-    }
-    useEffect(
-        () => {
-            getCategories();
-        }, []
-    );
-
-    // updated function to getPostByUserId - need to include userId parameter, but how do we get it?
-    // Post details should work from this page, right?
-    const getPosts = (userId) => {
-        getPostByUserId(userId).then((data) => setPosts(data));
-    };
 
     useEffect(() => {
-        getPosts();
+        getPostsByUserId(userProfile.id).then(setPosts);
     }, []);
 
     return (
@@ -36,7 +22,7 @@ export const PostList = () => {
                 </tr>
             </thead>
             <tbody>
-                {posts.map((p) => {
+                {posts?.map((p) => {
                     return <Post post={p} key={p.id} />;
                 })}
             </tbody>
