@@ -23,3 +23,14 @@ export const deleteTag = (id) => {
         method: "DELETE"
     });
 };
+
+//updates the selected tag
+export const updateTag = (tag) => {
+    return fetch(`${baseUrl}/update/${tag.id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(tag)
+    });
+};
