@@ -219,7 +219,6 @@ namespace Tabloid.Repositories
             {
                 conn.Open();
 
-<<<<<<< HEAD
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"Update UserProfile
@@ -248,10 +247,6 @@ namespace Tabloid.Repositories
             }
 
         }
-=======
-
-
->>>>>>> main
         /*
         public UserProfile GetByFirebaseUserId(string firebaseUserId)
         {
