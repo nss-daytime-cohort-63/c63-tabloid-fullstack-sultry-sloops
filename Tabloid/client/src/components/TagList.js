@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { getAllTags } from "../modules/tagManager";
+import { getAllTags, updateTag } from "../modules/tagManager";
 import Tag from "./Tag";
 import TagMaker from "./TagMaker";
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Input } from "reactstrap";
 import { deleteTag } from "../modules/tagManager";
 
 
@@ -14,6 +14,9 @@ const TagList = () => {
         id: 0,
         name: ""
     })
+
+    const [showUpdate, setShowUpdate] = useState(false);
+    const toggleUpdate = () => { setShowUpdate(!showUpdate) };
 
     const toggle = () => { setShow(!show) };
 
@@ -33,13 +36,20 @@ const TagList = () => {
             .then(getTags());
     };
 
+    const yesUpdate = (event) => {
+        event.preventDefault();
+        updateTag(selTag)
+            .then(toggleUpdate())
+            .then(getTags());
+    }
+
     return <>
         <TagMaker getTags={getTags} />
         <div>Tag List</div>
         <ul>
             {tags.map((t) => {
                 return (<>
-                    <Tag tag={t} key={t.id} toggle={toggle} setSelTag={setSelTag} />
+                    <Tag tag={t} key={t.id} toggle={toggle} setSelTag={setSelTag} toggleUpdate={toggleUpdate} />
                 </>
                 )
             })}
@@ -53,6 +63,31 @@ const TagList = () => {
                 </Button>
                 <Button variant="primary" onClick={event => yesDelete(event)}>
                     Confirm Delete
+                </Button>
+            </ModalFooter>
+        </Modal>
+        <Modal isOpen={showUpdate} toggle={toggleUpdate}>
+            <ModalHeader closeButton>Update Tag Confirmation</ModalHeader>
+            <ModalBody>Are you sure that you'd like to update {selTag.id}, {selTag.name}?</ModalBody>
+            <Form>
+                <Input
+                    required autofocus
+                    type="text"
+                    value={selTag.name}
+                    onChange={
+                        (event) => {
+                            const copy = { ...selTag }
+                            copy.name = event.target.value
+                            setSelTag(copy)
+                        }
+                    } />
+            </Form>
+            <ModalFooter>
+                <Button variant="secondary" onClick={toggleUpdate}>
+                    Cancel
+                </Button>
+                <Button variant="primary" onClick={event => yesUpdate(event)}>
+                    Confirm Update
                 </Button>
             </ModalFooter>
         </Modal>
