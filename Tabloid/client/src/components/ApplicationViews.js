@@ -26,6 +26,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="tag" element={<TagList />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
           <Route path="posts" element={<PostList />} />
+          {/* <Route path="myposts" element={<MyPostList />} /> */}
           <Route path="category" element={<CategoryList />} />
           <Route path="posts/:id" element={<PostDetails />} />
         </Route >

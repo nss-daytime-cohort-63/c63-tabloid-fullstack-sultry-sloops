@@ -15,3 +15,9 @@ export const getPostById = (id) => {
         response.json()
     );
 };
+
+export const getPostByUserId = (userId) => {
+    return fetch(`${baseUrl}/GetByUserId/${userId}`).then((response) =>
+        response.json()
+    );
+};
