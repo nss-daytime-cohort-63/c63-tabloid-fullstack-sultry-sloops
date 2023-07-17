@@ -11,16 +11,18 @@ import {
   FormGroup,
   Input,
   Label,
+  Badge,
 } from "reactstrap";
 import { getAllTags } from "../modules/tagManager";
-import { addPostTag } from "../modules/postTagManager";
+import { addPostTag, getPostTagsByPostId } from "../modules/postTagManager";
 
 const PostDetails = ({ userProfile }) => {
   const [post, setPost] = useState();
   const { id } = useParams();
   const [modal, setModal] = useState(false);
   const [tags, setTags] = useState([]);
-  const [postTag, setPostTag] = useState({
+  const [postTags, setPostTags] = useState([]);
+  const [newPostTag, setNewPostTag] = useState({
     postId: 0,
     tagId: 0,
   });
@@ -32,16 +34,18 @@ const PostDetails = ({ userProfile }) => {
   const toggle = () => setModal(!modal);
 
   const submit = () => {
-    addPostTag(postTag);
+    addPostTag(newPostTag);
     toggle();
+    getPostTagsByPostId(id).then(setPostTags);
   };
 
   useEffect(() => {
     getPostById(id).then(setPost);
+    getPostTagsByPostId(id).then(setPostTags);
     getTags();
-    const copy = { ...postTag };
+    const copy = { ...newPostTag };
     copy.postId = parseInt(id);
-    setPostTag(copy);
+    setNewPostTag(copy);
   }, []);
 
   if (!post) {
@@ -67,6 +71,11 @@ const PostDetails = ({ userProfile }) => {
       </div>
       <h1>{post.title}</h1>
       <h2>{post.category.name}</h2>
+      <div>
+        {postTags.map((pt) => {
+          return <Badge color="primary">{pt?.tag?.name}</Badge>;
+        })}
+      </div>
       {userProfile.id === post.userProfile.id ? (
         <Button onClick={toggle}>Add Tags to Post</Button>
       ) : null}
@@ -86,9 +95,9 @@ const PostDetails = ({ userProfile }) => {
                             type="radio"
                             name="tag"
                             onClick={() => {
-                              const copy = { ...postTag };
+                              const copy = { ...newPostTag };
                               copy.tagId = t.id;
-                              setPostTag(copy);
+                              setNewPostTag(copy);
                             }}
                           />
                           <Label>
