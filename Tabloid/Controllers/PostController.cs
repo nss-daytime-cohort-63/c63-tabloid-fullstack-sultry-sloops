@@ -39,5 +39,12 @@ namespace Tabloid.Controllers
             }
             return Ok(post);
         }
+
+        // Get posts by user profile
+        [HttpGet("GetByUserId/{userId}")]
+        public IActionResult GetPostByUserId(int userId)
+        {
+            return Ok(_postRepository.GetPostByUserId(userId));
+        }
     }
 }
