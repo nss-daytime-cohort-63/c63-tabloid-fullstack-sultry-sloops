@@ -11,9 +11,11 @@ namespace Tabloid.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
-        public PostController(IPostRepository postRepository)
+        private readonly ICategoryRepository _categoryRepository;
+
+        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository)
         {
-            _postRepository = postRepository;
+            _postRepository = postRepository; _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
@@ -38,6 +40,18 @@ namespace Tabloid.Controllers
                 return NotFound();
             }
             return Ok(post);
+        }
+
+        // POST api/<PostController>
+        [HttpPost("add")]
+        public IActionResult Post(Post post)
+        {
+            if (post == null)
+            {
+                return BadRequest();
+            }
+            _postRepository.Add(post);
+            return CreatedAtAction("Get", new { id = post.Id }, post);
         }
     }
 }
