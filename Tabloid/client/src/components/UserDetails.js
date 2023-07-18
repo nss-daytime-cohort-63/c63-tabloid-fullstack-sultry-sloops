@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getUserById, reactivateUser } from "../modules/userManager";
 import { useNavigate, useParams } from "react-router-dom";
 import { deactivateUser } from "../modules/userManager";
-export const UserDetails = () => {
+export const UserDetails = ({ userProfile }) => {
     const [user, setUser] = useState();
     const { id } = useParams();
     const navigate = useNavigate()
@@ -44,9 +44,11 @@ export const UserDetails = () => {
         <section>Creation Date: {date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}</section>
         <section>User Type: {user.userType.name}</section>
         {
-            user.isActive === true ? <button onClick={(ev)=>deactivateCurrent(ev)}>Deactivate</button> : <button onClick={(ev)=>reactivateCurrent(ev)}>Reactivate</button>
+            user.isActive === true && userProfile?.userTypeId === 1 ? <button onClick={(ev)=>deactivateCurrent(ev)}>Deactivate</button> : ""
         }
-        
+        {
+            user.isActive === false && userProfile?.userTypeId === 1 ? <button onClick={(ev)=>reactivateCurrent(ev)}>Reactivate</button> : ""
+        }
 
     </div>
 }
