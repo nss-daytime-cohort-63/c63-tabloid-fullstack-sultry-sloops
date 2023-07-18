@@ -60,6 +60,18 @@ namespace Tabloid.Controllers
             return CreatedAtAction("Get", new { id = post.Id }, post);
         }
 
+        // UPDATE - verify for accuracy
+        [HttpPut("update/{id}")]
+        public IActionResult Put(int id, Post post)
+        {
+            if (id != post.Id)
+            {
+                return BadRequest();
+            }
+            _postRepository.Update(post);
+            return NoContent();
+        }
+
         // DELETE
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
