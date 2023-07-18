@@ -81,19 +81,26 @@ const PostDetails = ({ userProfile }) => {
           </section>
         )}
       </div>
-      <h1>{post.title}</h1>
-      <h2>{post.category.name}</h2>
+      <h1 className="title">{post.title}</h1>
+      <h2 className="subtitle">{post.category.name}</h2>
       <div>
         {postTags.map((pt) => {
           return (
-            <Badge color="primary" id={pt?.id} onClick={(evt) => deletePT(evt)}>
+            <Badge
+              color="primary"
+              className="badge"
+              id={pt?.id}
+              onClick={(evt) => deletePT(evt)}
+            >
               {pt?.tag?.name}
             </Badge>
           );
         })}
       </div>
-      {userProfile.id === post.userProfile.id ? (
-        <Button onClick={toggle}>Add Tags to Post</Button>
+      {userProfile?.id === post.userProfile.id ? (
+        <Button onClick={toggle} className="addTagButton">
+          Add Tags to Post
+        </Button>
       ) : null}
       {toggle ? (
         <div>
