@@ -19,6 +19,7 @@ import {
   getPostTagsByPostId,
   deletePostTag,
 } from "../modules/postTagManager";
+import "./postDetails.css";
 
 const PostDetails = ({ userProfile }) => {
   const [post, setPost] = useState();
@@ -67,7 +68,7 @@ const PostDetails = ({ userProfile }) => {
 
   return (
     <div className="container">
-      <div>
+      <div className="HeaderImageContainer">
         {post.imageLocation === null ? (
           <section>
             <img
@@ -81,9 +82,11 @@ const PostDetails = ({ userProfile }) => {
           </section>
         )}
       </div>
-      <h1 className="title">{post.title}</h1>
-      <h2 className="subtitle">{post.category.name}</h2>
-      <div>
+      <div className="titles">
+        <h1 className="title">{post.title}</h1>
+        <h2 className="subtitle">{post.category.name}</h2>
+      </div>
+      <div className="tags">
         {postTags.map((pt) => {
           return (
             <Badge
@@ -144,8 +147,8 @@ const PostDetails = ({ userProfile }) => {
           </Modal>
         </div>
       ) : null}
-      <div>
-        <div>
+      <div className="PostDetailsBar">
+        <div className="UserInfo">
           {post.userProfile.imageLocation === null ? (
             <section>
               <img
@@ -161,11 +164,10 @@ const PostDetails = ({ userProfile }) => {
           <p>{post.userProfile.displayName}</p>
         </div>
         <div>
-          Creation Date: {date.getMonth() + 1}/{date.getDate()}/
-          {date.getFullYear()}
+          {date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
         </div>
       </div>
-      <div>{post.content}</div>
+      <div className="postBody">{post.content}</div>
     </div>
   );
 };
