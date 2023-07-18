@@ -11,5 +11,6 @@ namespace Tabloid.Repositories
         List<Post> GetAllPastApprovedPosts();
         List<Post> GetPostByUserId(int userProfileId);
         Post GetPublishedPostById(int id);
+        void Update(Post post);
     }
 }

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { Button, Form, FormGroup, Input, Label } from "reactstrap";
+import { Button } from "reactstrap";
 import { getAllCategories } from "../modules/categoryManager";
 import { useState, useEffect } from "react";
 import { addNewPost } from "../modules/postManager";

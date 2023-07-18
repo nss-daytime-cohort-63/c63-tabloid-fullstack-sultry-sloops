@@ -45,6 +45,16 @@ export const addNewPost = (post) => {
     // });
 };
 
+export const editPost = (id, post) => {
+    return fetch(`${baseUrl}/update/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(post)
+    });
+};
+
 export const deletePost = (id) => {
     return fetch(`${baseUrl}/${id}`, {
         method: "DELETE",
