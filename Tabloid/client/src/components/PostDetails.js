@@ -100,11 +100,13 @@ const PostDetails = ({ userProfile }) => {
           );
         })}
       </div>
-      {userProfile?.id === post.userProfile.id ? (
-        <Button onClick={toggle} className="addTagButton">
-          Add Tags to Post
-        </Button>
-      ) : null}
+      <div className="AddButton">
+        {userProfile?.id === post.userProfile.id ? (
+          <Button onClick={toggle} className="addTagButton">
+            Add Tags to Post
+          </Button>
+        ) : null}
+      </div>
       {toggle ? (
         <div>
           <Modal isOpen={modal} toggle={toggle}>

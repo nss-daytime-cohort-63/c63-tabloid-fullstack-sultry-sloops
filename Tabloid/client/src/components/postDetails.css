@@ -3,7 +3,6 @@
 
 .HeaderImageContainer{
     display: flex;
-    border: 1px solid lime;
     justify-content: center;
     padding: 2em;
     background-color: #e8e8e8;
@@ -24,7 +23,7 @@
 
 .titles h2{
     color: #db534f;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.3em;
 }
 
@@ -50,7 +49,7 @@
     justify-content: center;
 }
 
-.addTagButton{
+.AddButton{
     display: flex;
     justify-content: center;
 }
