@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+
+.HeaderImageContainer{
+    display: flex;
+    justify-content: center;
+    padding: 2em;
+    background-color: #e8e8e8;
+    width: 100%;
+}
+
+.titles{
+    text-align: center;
+    text-transform: uppercase;
+    color:#1a1a1a;
+    font-weight: bold;
+}
+
+.titles h1{
+    font-weight: 400;
+    font-size: 2.5em;
+}
+
+.titles h2{
+    color: #db534f;
+    font-weight: 400;
+    font-size: 1.3em;
+}
+
+.PostDetailsBar{
+    display: flex;
+    justify-content: space-evenly;
+    font-weight: 300;
+}
+
+.UserInfo{
+    display: flex;
+    text-align: justify;
+    font-weight: 300;
+}
+
+.postBody{
+    font-weight: 300;  
+    line-height: 2.4em;  
+}
+
+.tags{
+    display: flex;
+    justify-content: center;
+}
+
+.AddButton{
+    display: flex;
+    justify-content: center;
+}
+
+*{
+    font-family: 'Roboto', sans-serif;
+}
