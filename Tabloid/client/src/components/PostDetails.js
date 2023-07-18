@@ -58,7 +58,7 @@ const PostDetails = ({ userProfile }) => {
     }
   };
 
-  const deleteP = (evt) => {
+  const deleteP = () => {
     if (userProfile.id === post.userProfile.id) {
       deletePost(id);
       navigate(`/myPosts`);
