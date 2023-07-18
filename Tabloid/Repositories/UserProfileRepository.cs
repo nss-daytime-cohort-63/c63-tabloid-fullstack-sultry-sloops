@@ -46,7 +46,37 @@ namespace Tabloid.Repositories
             }
 
         }
+        public List<UserProfile> GetAllAdmins()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"select * from UserProfile where UserTypeId = 1 and isActive = 1 ";
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        var users = new List<UserProfile>();
+                        while (reader.Read())
+                        {
+                            var user = new UserProfile()
+                            {
+                                Id = DbUtils.GetInt(reader, "Id"),
+                                FirstName = DbUtils.GetString(reader, "FirstName"),
+                                LastName = DbUtils.GetString(reader, "LastName"),
+                                DisplayName = DbUtils.GetString(reader, "DisplayName"),
+                                UserTypeId = DbUtils.GetInt(reader, "UserTypeId"),
+                                isActive = reader.GetBoolean(reader.GetOrdinal("isActive")),
+                               
+                            };
+                            users.Add(user);
+                        }
+                        return users;
+                    }
+                }
+            }
 
+        }
         public List<UserProfile> GetAllDeactive()
         {
             using (var conn = Connection)

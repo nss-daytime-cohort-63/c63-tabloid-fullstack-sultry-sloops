@@ -21,6 +21,11 @@ namespace Tabloid.Controllers
         {
             return Ok(_userProfileRepository.GetAll());
         }
+        [HttpGet("Admins")]
+        public IActionResult GetAdmins()
+        {
+            return Ok(_userProfileRepository.GetAllAdmins());
+        }
 
         [HttpGet("Deactive")]
         public IActionResult GetDeactive()
