@@ -19,6 +19,7 @@ import {
   getPostTagsByPostId,
   deletePostTag,
 } from "../modules/postTagManager";
+import "./postDetails.css";
 
 const PostDetails = ({ userProfile }) => {
   const [post, setPost] = useState();
@@ -67,7 +68,7 @@ const PostDetails = ({ userProfile }) => {
 
   return (
     <div className="container">
-      <div>
+      <div className="HeaderImageContainer">
         {post.imageLocation === null ? (
           <section>
             <img
@@ -81,20 +82,31 @@ const PostDetails = ({ userProfile }) => {
           </section>
         )}
       </div>
-      <h1>{post.title}</h1>
-      <h2>{post.category.name}</h2>
-      <div>
+      <div className="titles">
+        <h1 className="title">{post.title}</h1>
+        <h2 className="subtitle">{post.category.name}</h2>
+      </div>
+      <div className="tags">
         {postTags.map((pt) => {
           return (
-            <Badge color="primary" id={pt?.id} onClick={(evt) => deletePT(evt)}>
+            <Badge
+              color="primary"
+              className="badge"
+              id={pt?.id}
+              onClick={(evt) => deletePT(evt)}
+            >
               {pt?.tag?.name}
             </Badge>
           );
         })}
       </div>
-      {userProfile.id === post.userProfile.id ? (
-        <Button onClick={toggle}>Add Tags to Post</Button>
-      ) : null}
+      <div className="AddButton">
+        {userProfile?.id === post.userProfile.id ? (
+          <Button onClick={toggle} className="addTagButton">
+            Add Tags to Post
+          </Button>
+        ) : null}
+      </div>
       {toggle ? (
         <div>
           <Modal isOpen={modal} toggle={toggle}>
@@ -137,8 +149,8 @@ const PostDetails = ({ userProfile }) => {
           </Modal>
         </div>
       ) : null}
-      <div>
-        <div>
+      <div className="PostDetailsBar">
+        <div className="UserInfo">
           {post.userProfile.imageLocation === null ? (
             <section>
               <img
@@ -154,11 +166,10 @@ const PostDetails = ({ userProfile }) => {
           <p>{post.userProfile.displayName}</p>
         </div>
         <div>
-          Creation Date: {date.getMonth() + 1}/{date.getDate()}/
-          {date.getFullYear()}
+          {date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}
         </div>
       </div>
-      <div>{post.content}</div>
+      <div className="postBody">{post.content}</div>
     </div>
   );
 };
