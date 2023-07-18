@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Post } from "./Post";
-import { getPostById } from "../modules/postManager";
+import { deletePost, getAllPosts, getPostById } from "../modules/postManager";
 import {
   Button,
   Modal,
@@ -20,11 +20,14 @@ import {
   deletePostTag,
 } from "../modules/postTagManager";
 import "./postDetails.css";
+import { PostDetailsDeleteModal } from "./PostDetailsDeleteModal";
+import { PostDetailsPostTagModal } from "./PostDetailsPostTagModal";
 
 const PostDetails = ({ userProfile }) => {
   const [post, setPost] = useState();
   const { id } = useParams();
   const [modal, setModal] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
   const [tags, setTags] = useState([]);
   const [postTags, setPostTags] = useState([]);
   const [deleteTag, setDeleteTag] = useState();
@@ -33,11 +36,14 @@ const PostDetails = ({ userProfile }) => {
     tagId: 0,
   });
 
+  const navigate = useNavigate();
+
   const getTags = () => {
     getAllTags().then((data) => setTags(data));
   };
 
   const toggle = () => setModal(!modal);
+  const toggleDelete = () => setModalDelete(!modalDelete);
 
   const submit = () => {
     addPostTag(newPostTag);
@@ -49,6 +55,13 @@ const PostDetails = ({ userProfile }) => {
     if (userProfile.id === post.userProfile.id) {
       deletePostTag(evt.target.id);
       getPostTagsByPostId(id).then(setPostTags);
+    }
+  };
+
+  const deleteP = () => {
+    if (userProfile.id === post.userProfile.id) {
+      deletePost(id);
+      navigate(`/myPosts`);
     }
   };
 
@@ -86,6 +99,7 @@ const PostDetails = ({ userProfile }) => {
         <h1 className="title">{post.title}</h1>
         <h2 className="subtitle">{post.category.name}</h2>
       </div>
+
       <div className="tags">
         {postTags.map((pt) => {
           return (
@@ -102,53 +116,30 @@ const PostDetails = ({ userProfile }) => {
       </div>
       <div className="AddButton">
         {userProfile?.id === post.userProfile.id ? (
-          <Button onClick={toggle} className="addTagButton">
-            Add Tags to Post
-          </Button>
+          <>
+            <Button onClick={toggle} className="addTagButton">
+              Add Tags to Post
+            </Button>
+            <Button color="danger" onClick={toggleDelete}>
+              Delete Post
+            </Button>
+          </>
         ) : null}
       </div>
-      {toggle ? (
-        <div>
-          <Modal isOpen={modal} toggle={toggle}>
-            <ModalHeader toggle={toggle}>Add a Tag to Post</ModalHeader>
-            <ModalBody>
-              <FormGroup>
-                {tags.map((t) => {
-                  return (
-                    <>
-                      <div>
-                        <FormGroup>
-                          <Input
-                            bsSize=""
-                            type="radio"
-                            name="tag"
-                            onClick={() => {
-                              const copy = { ...newPostTag };
-                              copy.tagId = t.id;
-                              setNewPostTag(copy);
-                            }}
-                          />
-                          <Label>
-                            {t.name} - {t.id}
-                          </Label>
-                        </FormGroup>
-                      </div>
-                    </>
-                  );
-                })}
-              </FormGroup>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" onClick={submit}>
-                Submit Post Tag
-              </Button>{" "}
-              <Button color="secondary" onClick={toggle}>
-                Cancel
-              </Button>
-            </ModalFooter>
-          </Modal>
-        </div>
-      ) : null}
+
+      <PostDetailsDeleteModal
+        isOpen={modalDelete}
+        toggle={toggleDelete}
+        deleteP={deleteP}
+      />
+      <PostDetailsPostTagModal
+        isOpen={modal}
+        toggle={toggle}
+        tags={tags}
+        submit={submit}
+        setNewPostTag={setNewPostTag}
+        newPostTag={newPostTag}
+      />
       <div className="PostDetailsBar">
         <div className="UserInfo">
           {post.userProfile.imageLocation === null ? (

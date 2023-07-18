@@ -44,3 +44,9 @@ export const addNewPost = (post) => {
     });
     // });
 };
+
+export const deletePost = (id) => {
+    return fetch(`${baseUrl}/${id}`, {
+        method: "DELETE",
+    });
+};

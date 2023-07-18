@@ -147,27 +147,6 @@ export const PostForm = ({ getPosts, userProfile }) => {
                 </div>
 
             </div>
-
-            {/* <Form>
-            <FormGroup>
-                <Label for="title">Title</Label>
-                <Input type="text" name="title" id="title" placeholder="Post Title" value={post.Title}
-                    onChange={handleInputChange} />
-            </FormGroup>
-            <FormGroup>
-                <Label for="Content">Content</Label>
-                <Input type="textarea" name="content" id="content" placeholder="Post Content" value={post.Content}
-                    onChange={handleInputChange} />
-            </FormGroup>
-            <FormGroup>
-                <Label for="ImageLocation">Image Location URL</Label>
-                <Input type="text" name="imageLocation" id="imageLocation" placeholder="Image Location URL" value={post.ImageLocation}
-                    onChange={handleInputChange} />
-            </FormGroup>
-
-            //start here
-
-        </Form> */}
         </>
     )
 }
