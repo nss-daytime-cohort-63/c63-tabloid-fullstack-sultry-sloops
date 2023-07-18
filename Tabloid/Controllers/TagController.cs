@@ -47,9 +47,15 @@ namespace Tabloid.Controllers
         }
 
         // PUT api/<TagController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("update/{id}")]
+        public IActionResult Put(int id, Tag tag)
         {
+            if (tag.Id != id)
+            {
+                return BadRequest();
+            }
+            _tagRepository.Update(tag);
+            return NoContent();
         }
 
         // DELETE api/<TagController>/5
