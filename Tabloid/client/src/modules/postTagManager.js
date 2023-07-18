@@ -17,3 +17,9 @@ export const addPostTag = (postTag) => {
     body: JSON.stringify(postTag),
   });
 };
+
+export const deletePostTag = (id) => {
+  return fetch(`${baseUrl}/${id}`, {
+    method: "DELETE",
+  });
+};
