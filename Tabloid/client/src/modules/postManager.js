@@ -24,7 +24,7 @@ export const getPostsByUserId = (userId) => {
 
 export const addNewPost = (post) => {
     // return getToken().then((token) => {
-    return fetch(`baseUrl/add`, {
+    return fetch(`${baseUrl}/add`, {
         method: "POST",
         headers: {
             // Authorization: `Bearer ${token}`,

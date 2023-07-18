@@ -3,7 +3,7 @@ const baseUrl = "/api/category"
 //gets all categories with id and name
 export const getAllCategories = () => {
     return fetch(`${baseUrl}`)
-        .then(res => res.json())
+        .then((res) => res.json())
 }
 
 //adds a new category to the database

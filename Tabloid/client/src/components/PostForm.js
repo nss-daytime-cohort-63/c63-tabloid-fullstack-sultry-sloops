@@ -1,21 +1,40 @@
 import { useNavigate } from "react-router-dom"
-import { Form, FormGroup, Input, Label } from "reactstrap";
+import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import { getAllCategories } from "../modules/categoryManager";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { addNewPost } from "../modules/postManager";
 
 
-export const PostForm = ({ getPosts, userProfile, getAllCategories }) => {
+export const PostForm = ({ getPosts, userProfile }) => {
     const navigate = useNavigate();
+
+    const [categories, setCategories] = useState([]);
+
+    // to offset timezone to local time
+    var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+
     const [newPost, updatePost] = useState({
         Title: '',
         Content: '',
         ImageLocation: '',
-        CreateDateTime: '', // need this to be the current date/time
-        isApproved: 1, // need this to automatically assign 1
-        CategoryId: '',
-        UserProfileId: ''
+        CreateDateTime: localISOTime,
+        PublishDateTime: localISOTime,
+        isApproved: true,
+        CategoryId: 0,
+        UserProfileId: 0
     });
+
+    useEffect(
+        () => {
+            if (userProfile) {
+                const copy = { ...newPost }
+                copy.UserProfileId = userProfile.id
+                updatePost(copy)
+            }
+        },
+        [userProfile]
+    )
 
     const newPostButton = (event) => {
         event.preventDefault();
@@ -24,16 +43,29 @@ export const PostForm = ({ getPosts, userProfile, getAllCategories }) => {
             Content: newPost.Content,
             ImageLocation: newPost.ImageLocation,
             CreateDateTime: newPost.CreateDateTime,
+            PublishDateTime: newPost.PublishDateTime,
             isApproved: newPost.isApproved,
             CategoryId: newPost.CategoryId,
             UserProfileId: newPost.UserProfileId
         };
         addNewPost(nP).then((post) => {
-            getPosts();
+            navigate('/myPosts');
         })
     };
 
-    const categories = getAllCategories();
+    const getCategories = () => {
+        getAllCategories().then(data => setCategories(data));
+
+    }
+
+    useEffect(
+        () => {
+            getCategories()
+        },
+        []
+    )
+
+
 
     return (
         <>
@@ -93,22 +125,25 @@ export const PostForm = ({ getPosts, userProfile, getAllCategories }) => {
                         onChange={
                             (event) => {
                                 const copy = { ...newPost }
-                                copy.CategoryId = event.target.value
+                                copy.CategoryId = parseInt(event.target.value)
                                 updatePost(copy);
                             }
                         }>
                         <option value="0">Select category</option>
                         {
-                            categories.map(
-                                (category) => {
-                                    return <option key={category.id}>
-                                        {category.Name}
-                                    </option>
-                                }
-                            )
+                            categories.length > 0 ?
+                                categories.map(
+                                    (category) => {
+                                        return <option key={category.id} value={category.id}>
+                                            {category.name}
+                                        </option>
+                                    }
+                                ) : ""
                         }
                     </select>
-
+                    <div>
+                        <Button onClick={newPostButton}>Add Post</Button>
+                    </div>
                 </div>
 
             </div>
