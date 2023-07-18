@@ -12,6 +12,7 @@ import CategoryList from "./CategoryList";
 import PostDetails from "./PostDetails";
 import { DeactiveUserList } from "./UserDList";
 import { MyPostList } from "./MyPostList";
+import { PostForm } from "./PostForm";
 
 export default function ApplicationViews({ isLoggedIn, userProfile }) {
   return (
@@ -24,13 +25,14 @@ export default function ApplicationViews({ isLoggedIn, userProfile }) {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path ="users" element={<UserList />} />
-          <Route path ="users/deactive" element={<DeactiveUserList />} />
-          <Route path ="users/:id" element={<UserDetails />} />
-          <Route path ="users/edit/:id" element={<UserEdit />} />
+          <Route path="users" element={<UserList />} />
+          <Route path="users/deactive" element={<DeactiveUserList />} />
+          <Route path="users/:id" element={<UserDetails />} />
+          <Route path="users/edit/:id" element={<UserEdit />} />
           <Route path="tag" element={<TagList />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
           <Route path="posts" element={<PostList />} />
+          <Route path="addPost" element={<PostForm userProfile={userProfile} />} />
           <Route path="myposts" element={<MyPostList userProfile={userProfile} />} />
           <Route
             path="posts"
