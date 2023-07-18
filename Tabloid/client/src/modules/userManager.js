@@ -10,12 +10,18 @@ export const getAllTypes = () =>{
     return fetch(typeUrl)
     .then((res)=> res.json())
 }
+
 export const getUserById =(id) =>{
     return fetch(`${baseUrl}/${id}`).then((res)=>res.json())
 }
 
 export const getDeactiveUsers = ()=>{
     return fetch(`${baseUrl}/deactive`)
+    .then((res)=>res.json())
+}
+
+export const getAllAdmins = () =>{
+    return fetch(`${baseUrl}/admins`)
     .then((res)=>res.json())
 }
 
