@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { getUserById, reactivateUser } from "../modules/userManager";
+import { getAllAdmins, getUserById, reactivateUser } from "../modules/userManager";
 import { useNavigate, useParams } from "react-router-dom";
 import { deactivateUser } from "../modules/userManager";
 export const UserDetails = ({ userProfile }) => {
     const [user, setUser] = useState();
+    const [admins,setAdmins] = useState();
     const { id } = useParams();
     const navigate = useNavigate()
+    useEffect(()=>{
+        getAllAdmins().then(users=>setAdmins(users))
+    },[])
     useEffect(() => {
         getUserById(id).then(setUser)
     }, [])
@@ -30,9 +34,16 @@ export const UserDetails = ({ userProfile }) => {
         })
     }
 
+    const deactivateError =()=>{
+      const myDiv=  document.querySelector("#deactivate-error")
+      myDiv.innerHTML = "You cant deactivate the last Admin"
+    }
+    const adminsLength = admins.length
+    
     const date = new Date(user.createDateTime)
     return <div>
         <h3>User Details</h3>
+      
         <section>{user.fullName}</section>
 
         {
@@ -44,11 +55,23 @@ export const UserDetails = ({ userProfile }) => {
         <section>Creation Date: {date.getMonth() + 1}/{date.getDate()}/{date.getFullYear()}</section>
         <section>User Type: {user.userType.name}</section>
         {
-            user.isActive === true && userProfile?.userTypeId === 1 ? <button onClick={(ev)=>deactivateCurrent(ev)}>Deactivate</button> : ""
+
+
+            user.isActive === true && userProfile?.userTypeId === 1 ? 
+            user?.userTypeId === 1 ? 
+                adminsLength > 1  ?
+                <button onClick={(ev)=>deactivateCurrent(ev)}>Deactivate</button> : <button onClick={()=>deactivateError()}>Deactivate</button>
+                :  <button onClick={(ev)=>deactivateCurrent(ev)}>Deactivate </button>
+            
+            : ""
         }
         {
             user.isActive === false && userProfile?.userTypeId === 1 ? <button onClick={(ev)=>reactivateCurrent(ev)}>Reactivate</button> : ""
         }
+
+        <div id="deactivate-error">
+
+        </div>
 
     </div>
 }

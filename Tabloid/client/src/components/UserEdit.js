@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { getAllTypes, getUserById, updateUser } from "../modules/userManager";
 import { useNavigate, useParams } from "react-router-dom";
+import { getAllAdmins } from "../modules/userManager";
 export const UserEdit =()=>{
     const [user,setUser] = useState();
-    const [types, setTypes] = useState([]);
+    const [original, setOriginal] = useState();
+    const [types, setTypes] = useState();
+    const [admins,setAdmins] = useState();
     const { id } = useParams();
     const navigate = useNavigate();
     useEffect(()=>{
+        getAllAdmins().then(users=>setAdmins(users))
+    },[])
+    useEffect(()=>{
         getUserById(id).then(setUser)
+    },[])
+    useEffect(()=>{
+        getUserById(id).then(setOriginal)
     },[])
 
     useEffect(()=>{
@@ -15,6 +24,9 @@ export const UserEdit =()=>{
     },[])
 
     if(!user){
+        return null;
+    }
+    if(!original){
         return null;
     }
 const myId = parseInt(id)
@@ -25,6 +37,11 @@ const myId = parseInt(id)
             navigate("/users")
         })
     }
+    const deactivateError =()=>{
+        const myDiv=  document.querySelector("#deactivate-error")
+        myDiv.innerHTML = "You cant change the type of the last Admin"
+      }
+    const adminsLength = admins.length
     return <div>
         <h3>Change {user.fullName}'s User Type</h3>
         <section><select  value ={user.userTypeId} onChange={
@@ -41,7 +58,21 @@ const myId = parseInt(id)
                 })
             }
             </select></section>
-            <button onClick={(ev)=> editUserType(ev)}>Save</button>
+            {
+                original.userTypeId === 1 ? 
+                adminsLength > 1  ?
+                <button onClick={(ev)=> editUserType(ev)}>Save</button> 
+                : 
+                user.userTypeId === 1 ? 
+                <button onClick={(ev)=> editUserType(ev)}>Save</button> :
+                <button onClick={()=>deactivateError()}>Save</button>
+                :
+                <button onClick={(ev)=> editUserType(ev)}>Save</button>
+            }
+            
             <button onClick={()=>navigate("/users")}>Cancel</button>
+            <div id="deactivate-error">
+
+        </div>
     </div>
 }

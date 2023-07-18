@@ -76,7 +76,20 @@ namespace Tabloid.Repositories
 
         public void Update(Tag tag)
         {
-            throw new System.NotImplementedException();
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Tag
+                        SET [Name] = @name
+                        WHERE Id = @id";
+                    DbUtils.AddParameter(cmd, "@name", tag.Name);
+                    DbUtils.AddParameter(cmd, "@id", tag.Id);
+                    cmd.ExecuteNonQuery();
+                } 
+            }
         }
     }
 }

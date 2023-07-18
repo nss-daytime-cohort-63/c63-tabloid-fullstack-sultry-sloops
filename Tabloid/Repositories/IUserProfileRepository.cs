@@ -16,5 +16,7 @@ namespace Tabloid.Repositories
         public void DeactivateUser(UserProfile user);
 
         public void ReactivateUser(UserProfile user);
+
+        public List<UserProfile> GetAllAdmins();
     }
 }
