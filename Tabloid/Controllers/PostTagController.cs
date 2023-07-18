@@ -40,6 +40,12 @@ namespace Tabloid.Controllers
             return CreatedAtAction(nameof(Get), new { id = postTag.Id }, postTag);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _postTagRepository.DeletePostTag(id);
+            return NoContent();
+        }
 
     }
 }
