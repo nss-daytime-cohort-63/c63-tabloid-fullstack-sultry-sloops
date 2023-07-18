@@ -14,7 +14,11 @@ import {
   Badge,
 } from "reactstrap";
 import { getAllTags } from "../modules/tagManager";
-import { addPostTag, getPostTagsByPostId } from "../modules/postTagManager";
+import {
+  addPostTag,
+  getPostTagsByPostId,
+  deletePostTag,
+} from "../modules/postTagManager";
 
 const PostDetails = ({ userProfile }) => {
   const [post, setPost] = useState();
@@ -22,6 +26,7 @@ const PostDetails = ({ userProfile }) => {
   const [modal, setModal] = useState(false);
   const [tags, setTags] = useState([]);
   const [postTags, setPostTags] = useState([]);
+  const [deleteTag, setDeleteTag] = useState();
   const [newPostTag, setNewPostTag] = useState({
     postId: 0,
     tagId: 0,
@@ -37,6 +42,13 @@ const PostDetails = ({ userProfile }) => {
     addPostTag(newPostTag);
     toggle();
     getPostTagsByPostId(id).then(setPostTags);
+  };
+
+  const deletePT = (evt) => {
+    if (userProfile.id === post.userProfile.id) {
+      deletePostTag(evt.target.id);
+      getPostTagsByPostId(id).then(setPostTags);
+    }
   };
 
   useEffect(() => {
@@ -73,7 +85,11 @@ const PostDetails = ({ userProfile }) => {
       <h2>{post.category.name}</h2>
       <div>
         {postTags.map((pt) => {
-          return <Badge color="primary">{pt?.tag?.name}</Badge>;
+          return (
+            <Badge color="primary" id={pt?.id} onClick={(evt) => deletePT(evt)}>
+              {pt?.tag?.name}
+            </Badge>
+          );
         })}
       </div>
       {userProfile.id === post.userProfile.id ? (
