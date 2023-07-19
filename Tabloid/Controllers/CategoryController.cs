@@ -44,7 +44,13 @@ namespace Tabloid.Controllers
             _categoryRepository.AddCategory(category);
             return CreatedAtAction("Get", new { id = category.Id }, category);
         }
-        
+        // DELETE api/<CategoryController>/5
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(int id) 
+        {
+        _categoryRepository.DeleteCategory(id);
+            return Ok();
+        }
     }
 
 }
