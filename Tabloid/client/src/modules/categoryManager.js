@@ -18,8 +18,8 @@ export const addCategory = (category) => {
 }
 
 //function to delete a category
-export const deleteCategory = () => {
-    return fetch(`${baseUrl}/delete`, {
+export const deleteCategory = (id) => {
+    return fetch(`${baseUrl}/delete/${id}`, {
         method: "DELETE"
     })
 }
