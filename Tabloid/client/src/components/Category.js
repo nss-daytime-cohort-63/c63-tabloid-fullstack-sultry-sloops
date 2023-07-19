@@ -1,17 +1,20 @@
 import React from "react";
-import { Button } from "reactstrap";
+import { Button, Input } from "reactstrap";
+import { deleteCategory } from "../modules/categoryManager";
 
-const Category = ({ c }) => {
+
+const Category = ({ c, setSelectCategory }) => {
+
     return (
         <>
             <li>{c.name}</li>
-            <Button>Delete</Button>
+            <Button onClick={() => {
+                setSelectCategory(c)
+            }}>Delete</Button>
+
         </>
     );
 }
-
-
-
 
 
 export default Category;
